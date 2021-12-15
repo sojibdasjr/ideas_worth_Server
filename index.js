@@ -21,12 +21,20 @@ async function run (){
         await client.connect();
         const database = client.db('ideas_worth');
         const eventCollection = database.collection('events');
+        const studentCollection = database.collection('students')
 
         //Get events api
         app.get('/events', async(req, res)=>{
             const cursor = eventCollection.find({});
             const events = await cursor.toArray();
             res.send(events);
+        })
+
+        //Get students api
+        app.get('/students',  async(req, res)=>{
+            const cursor = studentCollection.find({});
+            const students = await cursor.toArray();
+            res.send(students);
         })
     }
     finally{
