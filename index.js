@@ -46,6 +46,13 @@ async function run (){
             res.send(teachers);
         })
 
+        // student post api 
+        app.post('/students', async(req, res)=>{
+            const event = req.body;
+            const result = await studentCollection.insertOne(event);
+            res.json(result);
+        })
+
         // event post api
         app.post('/events', async(req, res)=>{
             const event = req.body;
