@@ -21,7 +21,8 @@ async function run (){
         await client.connect();
         const database = client.db('ideas_worth');
         const eventCollection = database.collection('events');
-        const studentCollection = database.collection('students')
+        const studentCollection = database.collection('students');
+        const teacherCollection = database.collection('teachers');
 
         //Get events api
         app.get('/events', async(req, res)=>{
@@ -35,6 +36,28 @@ async function run (){
             const cursor = studentCollection.find({});
             const students = await cursor.toArray();
             res.send(students);
+        })
+
+        // get teacher api
+
+        app.get('/teachers', async(req, res)=>{
+            const cursor = teacherCollection.find({});
+            const teachers = await cursor.toArray();
+            res.send(teachers);
+        })
+
+        // event post api
+        app.post('/events', async(req, res)=>{
+            const event = req.body;
+            const result = await eventCollection.insertOne(event);
+            res.json(result);
+        })
+
+        //teacher post api
+        app.post('/teachers', async(req, res)=>{
+            const teacher = req.body;
+            const result = await teacherCollection.insertOne(teacher);
+            res.json(result);
         })
     }
     finally{
