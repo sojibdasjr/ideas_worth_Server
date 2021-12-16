@@ -1,7 +1,8 @@
 const express = require('express');
 const { MongoClient } = require('mongodb');
 const cors  = require('cors');
-require('dotenv').config()
+require('dotenv').config();
+const ObjectId = require('mongodb').ObjectId;
 const app = express();
 const port = process.env.PORT || 5000;
 
@@ -29,14 +30,14 @@ async function run (){
             const cursor = eventCollection.find({});
             const events = await cursor.toArray();
             res.send(events);
-        })
+        });
 
         //Get students api
         app.get('/students',  async(req, res)=>{
             const cursor = studentCollection.find({});
             const students = await cursor.toArray();
             res.send(students);
-        })
+        });
 
         // get teacher api
 
@@ -44,28 +45,39 @@ async function run (){
             const cursor = teacherCollection.find({});
             const teachers = await cursor.toArray();
             res.send(teachers);
-        })
+        });
 
         // student post api 
         app.post('/students', async(req, res)=>{
             const event = req.body;
             const result = await studentCollection.insertOne(event);
             res.json(result);
-        })
+        });
 
         // event post api
         app.post('/events', async(req, res)=>{
             const event = req.body;
             const result = await eventCollection.insertOne(event);
             res.json(result);
-        })
+        });
 
         //teacher post api
         app.post('/teachers', async(req, res)=>{
             const teacher = req.body;
             const result = await teacherCollection.insertOne(teacher);
             res.json(result);
+        });
+
+        //delete oparation
+        // delete students
+        app.delete('/students/:id', async(req,  res )=>{
+            const id = req.params.id;
+            const query = {_id: ObjectId(id)};
+            const result = await studentCollection.deleteOne(query); 
+            res.json(result);
+            
         })
+
     }
     finally{
         // await client.close();
