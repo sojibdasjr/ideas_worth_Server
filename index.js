@@ -98,7 +98,25 @@ async function run (){
             const result = await studentCollection.deleteOne(query); 
             res.json(result);
             
-        })
+        });
+
+// delete teacher
+        app.delete('/teachers/:id', async(req,  res )=>{
+            const id = req.params.id;
+            const query = {_id: ObjectId(id)};
+            const result = await teacherCollection.deleteOne(query); 
+            res.json(result);
+            
+        });
+
+        // delete event
+        app.delete('/events/:id', async(req,  res )=>{
+            const id = req.params.id;
+            const query = {_id: ObjectId(id)};
+            const result = await eventCollection.deleteOne(query); 
+            res.json(result);
+            
+        });
 
     }
     finally{
